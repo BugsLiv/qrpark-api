@@ -4,6 +4,17 @@ import asyncHandler from '../utils/asyncHandler.js';
 export const scanVehicleQr = asyncHandler(async (req, res) => {
   const { qrToken } = req.params;
 
+  try {
+    // const vehicle = await Vehicle.findOne({
+    //   qrToken,
+    //   isQrActive: true,
+    // }).populate('owner', 'name phone countryCode phoneVisible');
+
+    // console.log('✅ Vehicle found:', vehicle ? 'yes' : 'no');
+    // if (!vehicle) {
+    //   res.status(404);
+    //   throw new Error('QR code not found');
+    // }
   const vehicle = await Vehicle.findOne({
     qrToken,
     isQrActive: true,
@@ -11,6 +22,8 @@ export const scanVehicleQr = asyncHandler(async (req, res) => {
     'owner',
     'name phone countryCode phoneVisible'
   );
+    // console.log('✅ Vehicle found:', vehicle ? 'yes' : 'no');
+
 
   if (!vehicle) {
     res.status(404);
@@ -45,4 +58,10 @@ export const scanVehicleQr = asyncHandler(async (req, res) => {
       owner,
     },
   });
+} catch (err) {
+  console.error('❌ Error in scanVehicleQr:', err);
+  console.error('❌ Error in scanVehicleQr:', err?.response || "");
+
+  throw err; // let asyncHandler catch it
+}
 });

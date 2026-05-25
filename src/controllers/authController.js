@@ -5,7 +5,7 @@ import { sendOtpEmail } from '../utils/sendEmail.js';
 import crypto from 'crypto';
 export const registerUser = asyncHandler(async (req, res) => {
     console.log("REGISTER API HIT")
-  const { name, email, password, phone,countryCode,role } = req.body;
+  const { name, email, phone,countryCode,role } = req.body;
 
   const userExists = await User.findOne({ email });
   if (userExists) {
@@ -16,7 +16,6 @@ export const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    password,
     phone,
     countryCode,
     role: role || 'user', 

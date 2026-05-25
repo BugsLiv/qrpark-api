@@ -26,11 +26,18 @@ const userSchema = new mongoose.Schema(
         'Please add a valid email',
       ],
     },
+    // password: {
+    //   type: String,
+    //   required: [true, 'Please add a password'],
+    //   minlength: 6,
+    //   select: false, 
+    // },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: false,        
       minlength: 6,
-      select: false, 
+      select: false,
+      default: undefined,   
     },
     phoneVisible: {
       type: Boolean,
@@ -62,6 +69,7 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
@@ -75,6 +83,7 @@ userSchema.pre("save", async function () {
 // });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  if (!this.password) return false;
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

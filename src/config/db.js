@@ -13,7 +13,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-export async function connectDB() {
+export default async function connectDB() {
   if (cached.conn) {
     return cached.conn;
   }
