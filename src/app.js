@@ -21,10 +21,35 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 // app.use(cors());
 
+// app.use(cors({
+//     origin: process.env.CLIENT_URL || 'http://localhost:3000',
+//     credentials: true,
+//   }));
+// Define allowed origins
+const allowedOrigins = [
+  'http://localhost:3000',          // Local Next.js dev server
+  'http://localhost:3001',          // Alternative local port (if needed)
+  process.env.CLIENT_URL,           // Production frontend from env
+  process.env.FRONTEND_URL,         // Alternative env variable
+  'https://qrpark-frontend-delta.vercel.app' // Explicit production URL
+].filter(Boolean);                  // Remove any undefined values
+
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
-    credentials: true,
-  }));
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., mobile apps, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,                // Allow cookies/auth headers
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app.use(morgan('dev'));
 
 // Routes
