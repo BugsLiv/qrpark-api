@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-      "vercel-build": "npm install",
+    "vercel-build": "npm install",
     "dev": "nodemon server.js"
   },
   "keywords": [],
@@ -28,6 +28,7 @@
     "nanoid": "^5.1.11",
     "nodemailer": "^8.0.7",
     "qrcode": "^1.5.4",
+    "sharp": "^0.34.5",
     "streamifier": "^0.1.1"
   },
   "devDependencies": {
